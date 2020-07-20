@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen} from '@testing-library/react';
 import MissionsList from './MissionsList';
+import MissionForm from './MissionForm'
 
 const missionsData = [
   {
@@ -56,24 +57,32 @@ const missionsData = [
   }
 ]
 
-test('MissionsList renders correctly when mounting', ()=> {
-    render(<MissionsList missions={[]} />);
+test('Renders correctly when mounting', ()=> {
+  render(<MissionsList missions={[]} />);
 });
 
 test('Displays missions as the missions prop is updated', ()=>{
-    const {rerender} = render(<MissionsList missions={[]} />);
-    //shows us what's being rendered in JS DOM 
-    // screen.debug();
+  const {rerender} = render(<MissionsList missions={[]} />);
+  //shows us what's being rendered in JS DOM 
+  // screen.debug();
 
-    //assert with an empty array, no missions are rendered
-    //query won't throw an error - will return a null instead
-    expect(screen.queryByText(/thaicom/i)).toBeNull();
+  //assert with an empty array, no missions are rendered
+  //query won't throw an error - will return a null instead
+  //only use query when trying to assert that an element is not there 
+  expect(screen.queryByText(/thaicom/i)).toBeNull();
+  expect(screen.queryAllByTestId('missions')).toHaveLength(0);
 
-    //simulate that the missions prop has changed and re-render the component 
-    rerender(<MissionsList missions={missionsData} />);
+  //simulate that the missions prop has changed and re-render the component 
+  rerender(<MissionsList missions={missionsData} />);
 
-    //asserting the names are rendering
-    expect(screen.getByText(/thaicom/i)).toBeInTheDocument();
-    //checks that all 3 names are being rendered 
-    expect(screen.getAllByTestId('missions')).toHaveLength(3);
+  //asserting the names are rendering
+  expect(screen.getByText(/thaicom/i)).toBeInTheDocument();
+  //checks that all 3 names are being rendered 
+  expect(screen.getAllByTestId('missions')).toHaveLength(3);
+})
+
+// test for the error prop
+test('Displays error message', () =>{
+  render(<MissionsList error={'Error'} missions={[]} />)
+  expect(screen.getByText(/error/i)).toBeInTheDocument();
 })
