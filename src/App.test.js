@@ -85,8 +85,8 @@ test('data is fetched and rendered correctly', async ()=>{
     //waiting for the async operation in the api call to finish
     //assert that missions data is rendered
     await waitFor(() => {
-        
-        // screen.findByText(/thaicom/i);
+        //checks that mock function has been called 
+        expect(mockFetchMissions).toHaveBeenCalledTimes(1);
     });
     //make your assertion that will run after the async operation finishes
     expect(screen.getByText(/thaicom/i)).toBeInTheDocument();
