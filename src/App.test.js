@@ -1,5 +1,6 @@
 import React from 'react';
-import {render, screen, fireEvent, waitFor} from '@testing-library/react';
+import {render, screen, waitFor} from '@testing-library/react';
+import userEvent from '@testing-library/user-event'
 import App from './App';
 import {fetchMissions as mockFetchMissions} from './api/fetchMissions';
 
@@ -78,8 +79,13 @@ test('data is fetched and rendered correctly', async ()=>{
     //mock the fetching function so that the button click doesn't actually make an API call
     //mock the function at the top of the file
 
+    //assert that missions are not rendered
+    expect(screen.queryByText(/thaicom/i)).toBeNull();
+    expect(screen.queryAllByTestId('missions')).toHaveLength(0);
+
     //click the get data button
-    fireEvent.click(screen.getByText(/get data/i));
+    //userEvent will mimic user experience in browser while fireEvent will fire the change once and pass the entire string
+    userEvent.click(screen.getByText(/get data/i));
 
     //test that the state changes happened
     //waiting for the async operation in the api call to finish
