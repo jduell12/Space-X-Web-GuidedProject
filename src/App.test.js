@@ -90,5 +90,6 @@ test('data is fetched and rendered correctly', async ()=>{
     });
     //make your assertion that will run after the async operation finishes
     expect(screen.getByText(/thaicom/i)).toBeInTheDocument();
+    expect(screen.getAllByTestId('missions')).toHaveLength(3);
 
 })
